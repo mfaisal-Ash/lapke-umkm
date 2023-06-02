@@ -1,0 +1,291 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "LAPAK-UMK OPEN API PROTOTYPE",
+        "contact": {},
+        "version": "2.0"
+    },
+    "paths": {
+        "/lapumk/getlaporan": {
+            "get": {
+                "description": "Get Data Jumlah.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Lapak-UMKM"
+                ],
+                "summary": "Kalkulasi Jumlah Laporan Keuangan.",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Recap"
+                        }
+                    }
+                }
+            }
+        },
+        "/lapumk/getpengeluaran": {
+            "get": {
+                "description": "get data Pengeluaran.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Lapak-UMKM"
+                ],
+                "summary": "Get data Pengeluaran.",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Pengeluaran"
+                        }
+                    }
+                }
+            }
+        },
+        "/lapumk/getpenjualan": {
+            "get": {
+                "description": "get data Penjualan.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Lapak-UMKM"
+                ],
+                "summary": "Get data Penjualan.",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Penjualan"
+                        }
+                    }
+                }
+            }
+        },
+        "/lapumk/inspengeluaran": {
+            "post": {
+                "description": "get data Pengeluaran.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Lapak-UMKM"
+                ],
+                "summary": "insert data Pengeluaran.",
+                "parameters": [
+                    {
+                        "description": "Payload Body [RAW]",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Pengeluaran"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Pengeluaran"
+                        }
+                    }
+                }
+            }
+        },
+        "/lapumk/inspenjualan": {
+            "post": {
+                "description": "get data penjualan.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Lapak-UMKM"
+                ],
+                "summary": "insert data penjualan.",
+                "parameters": [
+                    {
+                        "description": "Payload Body [RAW]",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Penjualan"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Penjualan"
+                        }
+                    }
+                }
+            }
+        },
+        "/lapumk/pengeluaran/{namapengeluaran}": {
+            "get": {
+                "description": "get data pengeluaran.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Lapak-UMKM"
+                ],
+                "summary": "Mengambil data Pengeluaran (single).",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Masukan namapengeluaran",
+                        "name": "namapengeluaran",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Pengeluaran"
+                        }
+                    }
+                }
+            }
+        },
+        "/lapumk/penjualan/{NamaProduk}": {
+            "get": {
+                "description": "get data Penjualan.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Lapak-UMKM"
+                ],
+                "summary": "Mengambil data Penjualan (single).",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Masukan namaproduk",
+                        "name": "NamaProduk",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Penjualan"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "main.ReturnData": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {},
+                "status": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "model.Pengeluaran": {
+            "type": "object",
+            "properties": {
+                "cabang": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "jumlah": {
+                    "type": "integer"
+                },
+                "namapengeluaran": {
+                    "type": "string"
+                },
+                "tanggal": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Penjualan": {
+            "type": "object",
+            "properties": {
+                "cabang": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "jumlahpenjualan": {
+                    "type": "integer"
+                },
+                "namaproduk": {
+                    "type": "string"
+                },
+                "tanggaldatamasuk": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Recap": {
+            "type": "object",
+            "properties": {
+                "jumlahbersih": {
+                    "type": "integer"
+                },
+                "jumlahkotor": {
+                    "type": "integer"
+                },
+                "pengeluaran": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Pengeluaran"
+                    }
+                },
+                "penjualan": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Penjualan"
+                    }
+                }
+            }
+        }
+    }
+}

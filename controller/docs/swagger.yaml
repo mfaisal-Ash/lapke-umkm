@@ -1,0 +1,189 @@
+definitions:
+  main.ReturnData:
+    properties:
+      code:
+        type: integer
+      data: {}
+      status:
+        type: string
+      success:
+        type: boolean
+    type: object
+  model.Pengeluaran:
+    properties:
+      cabang:
+        type: string
+      id:
+        type: integer
+      jumlah:
+        type: integer
+      namapengeluaran:
+        type: string
+      tanggal:
+        type: string
+    type: object
+  model.Penjualan:
+    properties:
+      cabang:
+        type: string
+      id:
+        type: integer
+      jumlahpenjualan:
+        type: integer
+      namaproduk:
+        type: string
+      tanggaldatamasuk:
+        type: string
+    type: object
+  model.Recap:
+    properties:
+      jumlahbersih:
+        type: integer
+      jumlahkotor:
+        type: integer
+      pengeluaran:
+        items:
+          $ref: '#/definitions/model.Pengeluaran'
+        type: array
+      penjualan:
+        items:
+          $ref: '#/definitions/model.Penjualan'
+        type: array
+    type: object
+info:
+  contact: {}
+  title: LAPAK-UMK OPEN API PROTOTYPE
+  version: "2.0"
+paths:
+  /lapumk/getlaporan:
+    get:
+      consumes:
+      - application/json
+      description: Get Data Jumlah.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Recap'
+      summary: Kalkulasi Jumlah Laporan Keuangan.
+      tags:
+      - Lapak-UMKM
+  /lapumk/getpengeluaran:
+    get:
+      consumes:
+      - application/json
+      description: get data Pengeluaran.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Pengeluaran'
+      summary: Get data Pengeluaran.
+      tags:
+      - Lapak-UMKM
+  /lapumk/getpenjualan:
+    get:
+      consumes:
+      - application/json
+      description: get data Penjualan.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Penjualan'
+      summary: Get data Penjualan.
+      tags:
+      - Lapak-UMKM
+  /lapumk/inspengeluaran:
+    post:
+      consumes:
+      - application/json
+      description: get data Pengeluaran.
+      parameters:
+      - description: Payload Body [RAW]
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.Pengeluaran'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Pengeluaran'
+      summary: insert data Pengeluaran.
+      tags:
+      - Lapak-UMKM
+  /lapumk/inspenjualan:
+    post:
+      consumes:
+      - application/json
+      description: get data penjualan.
+      parameters:
+      - description: Payload Body [RAW]
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.Penjualan'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Penjualan'
+      summary: insert data penjualan.
+      tags:
+      - Lapak-UMKM
+  /lapumk/pengeluaran/{namapengeluaran}:
+    get:
+      consumes:
+      - application/json
+      description: get data pengeluaran.
+      parameters:
+      - description: Masukan namapengeluaran
+        in: path
+        name: namapengeluaran
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Pengeluaran'
+      summary: Mengambil data Pengeluaran (single).
+      tags:
+      - Lapak-UMKM
+  /lapumk/penjualan/{NamaProduk}:
+    get:
+      consumes:
+      - application/json
+      description: get data Penjualan.
+      parameters:
+      - description: Masukan namaproduk
+        in: path
+        name: NamaProduk
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Penjualan'
+      summary: Mengambil data Penjualan (single).
+      tags:
+      - Lapak-UMKM
+swagger: "2.0"
