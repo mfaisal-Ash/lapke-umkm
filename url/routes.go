@@ -2,13 +2,13 @@ package url
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/rofinafiin/lapak-UMK/config"
-	"github.com/rofinafiin/lapak-UMK/controller/handler"
+	"github.com/sidiq200/lapke-umkm/config"
+	"github.com/sidiq200/lapke-umkm/controller/handler"
 )
 
 func SetuplapRoutes(router fiber.Router) {
 
-	Mongo := config.DBMongo("lapak-UMK")
+	Mongo := config.DBMongo("lapke-umkm")
 
 	UMK := handler.UMKHandler{Mongo}
 
@@ -18,7 +18,8 @@ func SetuplapRoutes(router fiber.Router) {
 	router.Post("/inspengeluaran", UMK.InsPengeluaran)
 	router.Get("/getpengeluaran", UMK.GetAllPengeluaran)
 	router.Get("/getpenjualan", UMK.GetAllPenjualan)
+	router.Get("/getpemasukan", UMK.GetAllPemasukan)
 	router.Get("/getlaporan", UMK.KalkulasiLaporan)
-	//router.Get("/peng/:namapengeluaran", UMK.GetPengeluaran)
+	
 
 }

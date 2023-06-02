@@ -69,7 +69,7 @@ func (db *UMKHandler) GetDataPenjualan(c *fiber.Ctx) (err error) {
 // @Success 200 {object} model.Penjualan
 // @Router /lapumk/inspenjualan [post]
 func (db *UMKHandler) InsertDataPenjualan(c *fiber.Ctx) (err error) {
-	database := config.DBMongo("lapak-UMK")
+	database := config.DBMongo("lapke-umkm")
 	var penjualan model.Penjualan
 	if err := c.BodyParser(&penjualan); err != nil {
 		return err
@@ -102,7 +102,7 @@ func (db *UMKHandler) InsertDataPenjualan(c *fiber.Ctx) (err error) {
 // @Success 200 {object} model.Pengeluaran
 // @Router /lapumk/inspengeluaran [post]
 func (db *UMKHandler) InsPengeluaran(c *fiber.Ctx) (err error) {
-	database := config.DBMongo("lapak-UMK")
+	database := config.DBMongo("lapke-umkm")
 	var pengeluaran model.Pengeluaran
 	if err := c.BodyParser(&pengeluaran); err != nil {
 		return err
@@ -167,7 +167,7 @@ func (db *UMKHandler) KalkulasiLaporan(c *fiber.Ctx) (err error) {
 		JumlahBersih:      jmlakhirrupiah,
 	}
 
-	_, err = repository.InsertRekap(config.DBMongo("lapak-UMK"),
+	_, err = repository.InsertRekap(config.DBMongo("lapke-umkm"),
 		getdatapengeluaran,
 		getdatapenjualan,
 		jmlpenjualan,
@@ -191,8 +191,8 @@ func (db *UMKHandler) KalkulasiLaporan(c *fiber.Ctx) (err error) {
 // @Success 200 {object} model.Pengeluaran
 // @Router /lapumk/getpengeluaran [get]
 func (db *UMKHandler) GetAllPengeluaran(c *fiber.Ctx) (err error) {
-	cabang := "pekanbaru"
-	getdata, err := repository.GetAllPengeluaran(cabang, config.DBMongo("lapak-UMK"))
+	cabang := "Surabaya"
+	getdata, err := repository.GetAllPengeluaran(cabang, config.DBMongo("lapke-umkm"))
 	if err != nil {
 		return fiber.NewError(fiber.StatusNotFound, "Data tidak ada")
 	}
@@ -213,8 +213,8 @@ func (db *UMKHandler) GetAllPengeluaran(c *fiber.Ctx) (err error) {
 // @Success 200 {object} model.Penjualan
 // @Router /lapumk/getpenjualan [get]
 func (db *UMKHandler) GetAllPenjualan(c *fiber.Ctx) (err error) {
-	cabang := "pekanbaru"
-	getdata, err := repository.GetAllPenjualan(cabang, config.DBMongo("lapak-UMK"))
+	cabang := "surabaya"
+	getdata, err := repository.GetAllPenjualan(cabang, config.DBMongo("lapke-umkm"))
 	if err != nil {
 		return fiber.NewError(fiber.StatusNotFound, "Data tidak ada")
 	}
