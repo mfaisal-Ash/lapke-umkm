@@ -53,8 +53,6 @@ type RecapResponse struct {
 	JumlahBersih      int         `json:"jumlahbersih" bson:"jumlahbersih"`
 }
 
-
-
 type Total struct {
 	TotalPemasukan  int `json:"totalpemasukan"`
 	TotalPengeluaran int `json:"totalpengeluaran"`
