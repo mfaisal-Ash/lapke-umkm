@@ -22,7 +22,7 @@ type ReturnData struct {
 	Data    interface{} `json:"data"`
 }
 
-// @title LAPke-umkm OPEN API PROTOTYPE
+// @title LAPKE-umkm OPEN API PROTOTYPE
 // @version 2.0
 
 // @host localhost:3000

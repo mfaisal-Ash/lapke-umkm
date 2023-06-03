@@ -13,15 +13,38 @@ type UMKHandler struct {
 	Mongo *mongo.Database
 }
 
+// GetDataPemasukan godoc
+// @Summary Mengambil data pemasukan (single).
+// @Description get data pemasukan.
+// @Tags Lapke-umkm
+// @Accept application/json
+// @Produce json
+// @Param namapemasukan path string true "Masukan namapemasukan"
+// @Success 200 {object} model.Pemasukan{}
+// @Router /lapuak/pemasukan/{namapemasukan} [get]
+func (db *UMKHandler) GetDataPemasukan(c *fiber.Ctx) (err error) {
+	namapenjualan := c.Params("namapemasukan")
+	getdata, err := repository.GetPemasukanByNama(namapenjualan, config.DBMongo("lapke-umkm"))
+	if err != nil {
+		return fiber.NewError(fiber.StatusNotFound, "Data Tidak ada")
+	}
+	return json.ReturnData{
+		Code:    200,
+		Success: true,
+		Status:  "Data Pemasukan berhasil diambil",
+		Data:    getdata,
+	}.WriteToBody(c)
+}
+
 // GetDataPengeluaran godoc
 // @Summary Mengambil data Pengeluaran (single).
 // @Description get data pengeluaran.
 // @Tags Lapke-umkm
 // @Accept application/json
 // @Produce json
-// @Param namapengeluaran path string true "Masukan namapengeluaran"
+// @Param namapengeluaranpath string true "Masukan namapengeluaran
 // @Success 200 {object} model.Pengeluaran{}
-// @Router /lapuak/pengeluaran/{namapengeluaran} [get]
+// @Router /lapuak/pengeluaran/{namapengeluaran [get]
 func (db *UMKHandler) GetDataPengeluaran(c *fiber.Ctx) (err error) {
 	namapenjualan := c.Params("namapengeluaran")
 	getdata, err := repository.GetPengeluaranByNama(namapenjualan, config.DBMongo("lapke-umkm"))
@@ -134,7 +157,11 @@ func (db *UMKHandler) InsPengeluaran(c *fiber.Ctx) (err error) {
 // @Success 200 {object} model.Recap
 // @Router /lapuak/getlaporan [get]
 func (db *UMKHandler) KalkulasiLaporan(c *fiber.Ctx) (err error) {
-	cabang := "pekanbaru"
+	cabang := "surabaya"
+	getdatapemasukan, err := repository.GetAllPemasukan(cabang, config.DBMongo("lapke-umkm"))
+	if err != nil {
+		return fiber.NewError(fiber.StatusNotFound, "Tidak Ada Data Pemasukan")
+	}
 	getdatapengeluaran, err := repository.GetAllPengeluaran(cabang, config.DBMongo("lapke-umkm"))
 	if err != nil {
 		return fiber.NewError(fiber.StatusNotFound, "Tidak Ada Data Pengeluaran")
@@ -143,31 +170,42 @@ func (db *UMKHandler) KalkulasiLaporan(c *fiber.Ctx) (err error) {
 	if err != nil {
 		return fiber.NewError(fiber.StatusNotFound, "Tidak Ada Data Penjualan")
 	}
+
 	jmlpenjualan := 0
-	for i, _ := range getdatapenjualan {
+	for i := range getdatapenjualan {
 		jmlpenjualan += getdatapenjualan[i].JumlahPenjualan
 	}
-	jmlpengeluaran := 0
-	for z, _ := range getdatapengeluaran {
-		jmlpengeluaran += getdatapengeluaran[z].Jumlah
+
+	jmlpemasukan := 0
+	for _, pemasukan := range getdatapemasukan {
+		jmlpemasukan += pemasukan.JumlahPemasukan
 	}
+
+	jmlpengeluaran := 0
+	for _, pengeluaran := range getdatapengeluaran {
+		jmlpengeluaran += pengeluaran.Jumlah
+	}
+
 	jumlahpenjualan := float64(jmlpenjualan)
+	jumlahpemasukan := float64(jmlpemasukan)
 	jumlahpengeluaran := float64(jmlpengeluaran)
-	jumlahakhir := float64(jmlpenjualan - jmlpengeluaran)
+	jumlahakhir := jumlahpenjualan - jumlahpengeluaran
+	totalkeuangan := jumlahpemasukan * jumlahpengeluaran / jumlahpenjualan
 
 	jmlpengeluaranrp := repository.FormatRupiah(jumlahpengeluaran)
 	jmlpemasukanrp := repository.FormatRupiah(jumlahpemasukan)
 	jmlakhirrupiah := repository.FormatRupiah(jumlahakhir)
-	jmlakhirrupiah := repository.FormatRupiah(jumlahakhir)
+	totalkeuanganrp := repository.FormatRupiah(totalkeuangan)
 	jmlpenjualanrp := repository.FormatRupiah(jumlahpenjualan)
 
 	data := model.RecapResponse{
 		Penjualan:         getdatapenjualan,
-		Pemasukan:       getdatapemasukan,
+		Pemasukan:         getdatapemasukan,
 		Pengeluaran:       getdatapengeluaran,
-		JumlahKotor:       jmlpenjualanrup,
-		JumlahPengeluaran: jmlpengeluaranrup,
+		JumlahKotor:       jmlpenjualanrp,
+		JumlahPengeluaran: jmlpengeluaranrp,
 		JumlahBersih:      jmlakhirrupiah,
+		Total:             totalkeuanganrp,
 	}
 
 	_, err = repository.InsertRekap(config.DBMongo("lapke-umkm"),
@@ -176,55 +214,14 @@ func (db *UMKHandler) KalkulasiLaporan(c *fiber.Ctx) (err error) {
 		jmlpenjualan,
 		int(jumlahakhir),
 	)
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, "Gagal menyimpan data rekap")
+	}
 
 	return json.ReturnData{
 		Code:    200,
 		Success: true,
 		Status:  "Data Rekap Berhasil Disimpan!",
 		Data:    data,
-	}.WriteToBody(c)
-}
-
-// GetAllPengeluaran godoc
-// @Summary Get data Pengeluaran.
-// @Description get data Pengeluaran.
-// @Tags Lapke-umkm
-// @Accept application/json
-// @Produce json
-// @Success 200 {object} model.Pengeluaran
-// @Router /lapuak/getpengeluaran [get]
-func (db *UMKHandler) GetAllPengeluaran(c *fiber.Ctx) (err error) {
-	cabang := "Surabaya"
-	getdata, err := repository.GetAllPengeluaran(cabang, config.DBMongo("lapke-umkm"))
-	if err != nil {
-		return fiber.NewError(fiber.StatusNotFound, "Data tidak ada")
-	}
-	return json.ReturnData{
-		Code:    200,
-		Success: true,
-		Status:  "Data Berhasil diambil",
-		Data:    getdata,
-	}.WriteToBody(c)
-}
-
-// GetAllPenjualan godoc
-// @Summary Get data Penjualan.
-// @Description get data Penjualan.
-// @Tags Lapke-umkm
-// @Accept application/json
-// @Produce json
-// @Success 200 {object} model.Penjualan
-// @Router /lapuak/getpenjualan [get]
-func (db *UMKHandler) GetAllPenjualan(c *fiber.Ctx) (err error) {
-	cabang := "surabaya"
-	getdata, err := repository.GetAllPenjualan(cabang, config.DBMongo("lapke-umkm"))
-	if err != nil {
-		return fiber.NewError(fiber.StatusNotFound, "Data tidak ada")
-	}
-	return json.ReturnData{
-		Code:    200,
-		Success: true,
-		Status:  "Data Berhasil diambil",
-		Data:    getdata,
 	}.WriteToBody(c)
 }

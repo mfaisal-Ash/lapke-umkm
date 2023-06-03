@@ -113,6 +113,16 @@ func InsertPemasukan(db *mongo.Database, id int, namapemasukan string, jumlahpem
 	return InsertOneDoc(db, "pemasukan", m), err
 }
 
+func GetPemasukanByNama(nama string, db *mongo.Database) (data model.Pemasukan, err error) {
+	user := db.Collection("pemasukan")
+	filter := bson.M{"namapemasukan": nama}
+	err = user.FindOne(context.TODO(), filter).Decode(&data)
+	if err != nil {
+		fmt.Printf("GetDataPemasukanFormNama: %v\n", err)
+	}
+	return data, err
+}
+
 func GetAllPemasukan(cabang string, db *mongo.Database) (data []model.Pemasukan, err error) {
 	user := db.Collection("pemasukan")
 	filter := bson.D{{}}
