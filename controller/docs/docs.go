@@ -234,6 +234,26 @@ const docTemplate = `{
                 }
             }
         },
+        "model.Pemasukan": {
+            "type": "object",
+            "properties": {
+                "cabang": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "jumlahpemasukan": {
+                    "type": "integer"
+                },
+                "namapemasukan": {
+                    "type": "string"
+                },
+                "tanggalDataPemasukan": {
+                    "type": "string"
+                }
+            }
+        },
         "model.Pengeluaran": {
             "type": "object",
             "properties": {
@@ -306,7 +326,7 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "",
 	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "LAPAK-UMK OPEN API PROTOTYPE",
+	Title:            "LAPKE-UMK OPEN API PROTOTYPE",
 	Description:      "",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
