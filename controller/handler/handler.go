@@ -170,6 +170,10 @@ func (db *UMKHandler) KalkulasiLaporan(c *fiber.Ctx) (err error) {
 	if err != nil {
 		return fiber.NewError(fiber.StatusNotFound, "Tidak Ada Data Penjualan")
 	}
+	getdatakeuangan, err := repository.HitungTotalKeuangan(getdatapemasukan, getdatapengeluaran)
+	if err != nil {
+	return fiber.NewError(fiber.StatusNotFound, "Tidak Ada Data Keuangan")
+}
 
 	jmlpenjualan := 0
 	for i := range getdatapenjualan {
@@ -185,6 +189,12 @@ func (db *UMKHandler) KalkulasiLaporan(c *fiber.Ctx) (err error) {
 	for _, pengeluaran := range getdatapengeluaran {
 		jmlpengeluaran += pengeluaran.Jumlah
 	}
+
+	totalkeuangan := 0
+	for _, keuangan := range getdatakeuangan {
+		totalkeuangan += keuangan.JumlahPemasukan + keuangan.JumlahPengeluaran + keuangan.JumlahPenjualan
+	}
+	
 
 	jumlahpenjualan := float64(jmlpenjualan)
 	jumlahpemasukan := float64(jmlpemasukan)

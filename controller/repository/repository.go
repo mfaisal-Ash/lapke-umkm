@@ -118,7 +118,7 @@ func GetPemasukanByNama(nama string, db *mongo.Database) (data model.Pemasukan, 
 	filter := bson.M{"namapemasukan": nama}
 	err = user.FindOne(context.TODO(), filter).Decode(&data)
 	if err != nil {
-		fmt.Printf("GetDataPemasukanFormNama: %v\n", err)
+		fmt.Printf("GetDataPengeluaranFormNama: %v\n", err)
 	}
 	return data, err
 }

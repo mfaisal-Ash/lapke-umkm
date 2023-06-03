@@ -7,6 +7,14 @@ type ReturnData struct {
 	Data    interface{} `json:"data"`
 }
 
+type Pemasukan struct {
+	ID               int    `json:"id" bson:"id"`
+	NamaPemasukan    string `json:"namapemasukan" bson:"namapemasukan"`
+	JumlahPemasukan  int    `json:"jumlahpemasukan" bson:"jumlahpemasukan"`
+	TanggalDataMasuk string `json:"tanggaldatamasuk" bson:"tanggaldatamasuk"`
+	Cabang           string `json:"cabang" bson:"cabang"`
+}
+
 type Penjualan struct {
 	ID               int    `json:"id" bson:"id"`
 	NamaProduk       string `json:"namaproduk" bson:"namaproduk"`
@@ -45,13 +53,7 @@ type RecapResponse struct {
 	JumlahBersih      int         `json:"jumlahbersih" bson:"jumlahbersih"`
 }
 
-type Pemasukan struct {
-	ID               int    `json:"id" bson:"id"`
-	NamaPemasukan    string `json:"namapemasukan" bson:"namapemasukan"`
-	JumlahPemasukan  int    `json:"jumlahpemasukan" bson:"jumlahpemasukan"`
-	TanggalDataMasuk string `json:"tanggaldatamasuk" bson:"tanggaldatamasuk"`
-	Cabang           string `json:"cabang" bson:"cabang"`
-}
+
 
 type Total struct {
 	TotalPemasukan  int `json:"totalpemasukan"`
