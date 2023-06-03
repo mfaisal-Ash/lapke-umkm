@@ -1,12 +1,12 @@
 {
     "swagger": "2.0",
     "info": {
-        "title": "LAPAK-UMK OPEN API PROTOTYPE",
+        "title": "LAPKE-UMM OPEN API PROTOTYPE",
         "contact": {},
         "version": "2.0"
     },
     "paths": {
-        "/lapumk/getlaporan": {
+        "/lapuak/getlaporan": {
             "get": {
                 "description": "Get Data Jumlah.",
                 "consumes": [
@@ -29,7 +29,30 @@
                 }
             }
         },
-        "/lapumk/getpengeluaran": {
+        "/lapuak/getpemasukan": {
+            "get": {
+                "description": "get data Pemasukan.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Lapak-UMKM"
+                ],
+                "summary": "Get data Pemasukan.",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Pemasukan"
+                        }
+                    }
+                }
+            }
+        },
+        "/lapuak/getpengeluaran": {
             "get": {
                 "description": "get data Pengeluaran.",
                 "consumes": [
@@ -52,7 +75,7 @@
                 }
             }
         },
-        "/lapumk/getpenjualan": {
+        "/lapuak/getpenjualan": {
             "get": {
                 "description": "get data Penjualan.",
                 "consumes": [
@@ -75,7 +98,7 @@
                 }
             }
         },
-        "/lapumk/inspengeluaran": {
+        "/lapuak/inspengeluaran": {
             "post": {
                 "description": "get data Pengeluaran.",
                 "consumes": [
@@ -109,7 +132,7 @@
                 }
             }
         },
-        "/lapumk/inspenjualan": {
+        "/lapuak/inspenjualan": {
             "post": {
                 "description": "get data penjualan.",
                 "consumes": [
@@ -143,7 +166,7 @@
                 }
             }
         },
-        "/lapumk/pengeluaran/{namapengeluaran}": {
+        "/lapuak/pengeluaran/{namapengeluaran}": {
             "get": {
                 "description": "get data pengeluaran.",
                 "consumes": [
@@ -175,7 +198,7 @@
                 }
             }
         },
-        "/lapumk/penjualan/{NamaProduk}": {
+        "/lapuak/penjualan/{NamaProduk}": {
             "get": {
                 "description": "get data Penjualan.",
                 "consumes": [
@@ -221,6 +244,26 @@
                 },
                 "success": {
                     "type": "boolean"
+                }
+            }
+        },
+        "model.Pemasukan": {
+            "type": "object",
+            "properties": {
+                "cabang": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "jumlahpemasukan": {
+                    "type": "integer"
+                },
+                "namapemasukan": {
+                    "type": "string"
+                },
+                "tanggaldatamasuk": {
+                    "type": "string"
                 }
             }
         },
@@ -272,6 +315,12 @@
                 },
                 "jumlahkotor": {
                     "type": "integer"
+                },
+                "pemasukan": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Pemasukan"
+                    }
                 },
                 "pengeluaran": {
                     "type": "array",

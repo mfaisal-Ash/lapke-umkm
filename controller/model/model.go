@@ -39,6 +39,7 @@ type Recap struct {
 type RecapResponse struct {
 	Penjualan         []Penjualan `json:"penjualan" bson:"penjualan"`
 	Pengeluaran       []Pengeluaran `json:"pengeluaran" bson:"pengeluaran"`
+	Pemasukan       []Pemasukan `json:"pemasukan" bson:"pemasukan"`
 	JumlahKotor       int         `json:"jumlahkotor" bson:"jumlahkotor"`
 	JumlahPengeluaran int         `json:"jumlahPengeluaran" bson:"jumlahPengeluaran"`
 	JumlahBersih      int         `json:"jumlahbersih" bson:"jumlahbersih"`
