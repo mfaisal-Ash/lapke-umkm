@@ -188,69 +188,69 @@ func (db *UMKHandler) InsPengeluaran(c *fiber.Ctx) (err error) {
 // @Produce json
 // @Success 200 {object} model.Recap
 // @Router /lapuak/getlaporan [get]
-func (db *UMKHandler) KalkulasiLaporan(c *fiber.Ctx) (err error) {
-	cabang := "surabaya"
-	getdatapemasukan, err := repository.GetAllPemasukan(cabang, config.DBMongo("lapke-umkm"))
-	if err != nil {
-		return fiber.NewError(fiber.StatusNotFound, "Tidak Ada Data Pemasukan")
-	}
-	getdatapengeluaran, err := repository.GetAllPengeluaran(cabang, config.DBMongo("lapke-umkm"))
-	if err != nil {
-		return fiber.NewError(fiber.StatusNotFound, "Tidak Ada Data Pengeluaran")
-	}
-	getdatapenjualan, err := repository.GetAllPenjualan(cabang, config.DBMongo("lapke-umkm"))
-	if err != nil {
-		return fiber.NewError(fiber.StatusNotFound, "Tidak Ada Data Penjualan")
-	}
+// func (db *UMKHandler) KalkulasiLaporan(c *fiber.Ctx) (err error) {
+// 	cabang := "surabaya"
+// 	getdatapemasukan, err := repository.GetAllPemasukan(cabang, config.DBMongo("lapke-umkm"))
+// 	if err != nil {
+// 		return fiber.NewError(fiber.StatusNotFound, "Tidak Ada Data Pemasukan")
+// 	}
+// 	getdatapengeluaran, err := repository.GetAllPengeluaran(cabang, config.DBMongo("lapke-umkm"))
+// 	if err != nil {
+// 		return fiber.NewError(fiber.StatusNotFound, "Tidak Ada Data Pengeluaran")
+// 	}
+// 	getdatapenjualan, err := repository.GetAllPenjualan(cabang, config.DBMongo("lapke-umkm"))
+// 	if err != nil {
+// 		return fiber.NewError(fiber.StatusNotFound, "Tidak Ada Data Penjualan")
+// 	}
 
-	// Menghitung total keuangan
-	totalKeuangan := repository.HitungTotalKeuangan(getdatapemasukan,getdatapengeluaran)
-	if err != nil {
-		return fiber.NewError(fiber.StatusNotFound, "Tidak Ada Data Total Keuangan")
-	}
+// 	// Menghitung total keuangan
+// 	totalKeuangan := repository.HitungTotalKeuangan(getdatapemasukan,getdatapengeluaran)
+// 	if err != nil {
+// 		return fiber.NewError(fiber.StatusNotFound, "Tidak Ada Data Total Keuangan")
+// 	}
 
-	jmlpenjualan := 0
-	for i := range getdatapenjualan {
-		jmlpenjualan += getdatapenjualan[i].JumlahPenjualan
-	}
+// 	jmlpenjualan := 0
+// 	for i := range getdatapenjualan {
+// 		jmlpenjualan += getdatapenjualan[i].JumlahPenjualan
+// 	}
 
-	jmlpemasukan := totalKeuangan.TotalPemasukan
-	jmlpengeluaran := totalKeuangan.TotalPengeluaran
+// 	jmlpemasukan := totalKeuangan.TotalPemasukan
+// 	jmlpengeluaran := totalKeuangan.TotalPengeluaran
 
-	jumlahpenjualan := float64(jmlpenjualan)
-	jumlahpemasukan := float64(jmlpemasukan)
-	jumlahpengeluaran := float64(jmlpengeluaran)
-	totalkeuangan := jumlahpemasukan - jumlahpengeluaran - jumlahpenjualan
+// 	jumlahpenjualan := float64(jmlpenjualan)
+// 	jumlahpemasukan := float64(jmlpemasukan)
+// 	jumlahpengeluaran := float64(jmlpengeluaran)
+// 	totalkeuangan := jumlahpemasukan - jumlahpengeluaran - jumlahpenjualan
 
-	jmlpengeluaranrp := repository.FormatRupiah(jumlahpengeluaran)
-	jmlpemasukanrp := repository.FormatRupiah(jumlahpemasukan)
-	totalkeuanganrp := repository.FormatRupiah(totalkeuangan)
-	jmlpenjualanrp := repository.FormatRupiah(jumlahpenjualan)
+// 	jmlpengeluaranrp := repository.FormatRupiah(jumlahpengeluaran)
+// 	jmlpemasukanrp := repository.FormatRupiah(jumlahpemasukan)
+// 	totalkeuanganrp := repository.FormatRupiah(totalkeuangan)
+// 	jmlpenjualanrp := repository.FormatRupiah(jumlahpenjualan)
 
-	data := model.RecapResponse{
-		Penjualan:         getdatapenjualan,
-		Pemasukan:         getdatapemasukan,
-		Pengeluaran:       getdatapengeluaran,
-		JumlahKotor:       int(jmlpenjualanrp),
-		JumlahPemasukan:   int(jmlpemasukanrp),
-		JumlahPengeluaran: int(jmlpengeluaranrp),
-		JumlahBersih:      int(totalkeuanganrp),
-	}
+// 	data := model.RecapResponse{
+// 		Penjualan:         getdatapenjualan,
+// 		Pemasukan:         getdatapemasukan,
+// 		Pengeluaran:       getdatapengeluaran,
+// 		JumlahKotor:       jmlpenjualanrp,
+// 		JumlahPemasukan:   jmlpemasukanrp,
+// 		JumlahPengeluaran: jmlpengeluaranrp,
+// 		JumlahBersih:      totalkeuanganrp,
+// 	}
 
-	_, err = repository.InsertRekap(config.DBMongo("lapke-umkm"),
-		getdatapengeluaran,
-		getdatapenjualan,
-		jmlpenjualan,
-		int(totalkeuangan),
-	)
-	if err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, "Gagal menyimpan data rekap")
-	}
+// 	_, err = repository.InsertRekap(config.DBMongo("lapke-umkm"),
+// 		getdatapengeluaran,
+// 		getdatapenjualan,
+// 		jmlpenjualan,
+// 		int(totalkeuangan),
+// 	)
+// 	if err != nil {
+// 		return fiber.NewError(fiber.StatusInternalServerError, "Gagal menyimpan data rekap")
+// 	}
 
-	return json.ReturnData{
-		Code:    200,
-		Success: true,
-		Status:  "Data Rekap Berhasil Disimpan!",
-		Data:    data,
-	}.WriteToBody(c)
-}
+// 	return json.ReturnData{
+// 		Code:    200,
+// 		Success: true,
+// 		Status:  "Data Rekap Berhasil Disimpan!",
+// 		Data:    data,
+// 	}.WriteToBody(c)
+// }
