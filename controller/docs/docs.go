@@ -16,7 +16,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/lapumk/getlaporan": {
+        "/lapuak/getlaporan": {
             "get": {
                 "description": "Get Data Jumlah.",
                 "consumes": [
@@ -39,7 +39,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/lapumk/getpengeluaran": {
+        "/lapuak/getpengeluaran": {
             "get": {
                 "description": "get data Pengeluaran.",
                 "consumes": [
@@ -62,7 +62,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/lapumk/getpenjualan": {
+        "/lapuak/getpenjualan": {
             "get": {
                 "description": "get data Penjualan.",
                 "consumes": [
@@ -85,7 +85,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/lapumk/inspengeluaran": {
+        "/lapuak/inspengeluaran": {
             "post": {
                 "description": "get data Pengeluaran.",
                 "consumes": [
@@ -119,7 +119,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/lapumk/inspenjualan": {
+        "/lapuak/inspenjualan": {
             "post": {
                 "description": "get data penjualan.",
                 "consumes": [
@@ -153,7 +153,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/lapumk/pengeluaran/{namapengeluaran}": {
+        "/lapuak/pengeluaran/{namapengeluaran}": {
             "get": {
                 "description": "get data pengeluaran.",
                 "consumes": [
@@ -185,7 +185,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/lapumk/penjualan/{NamaProduk}": {
+        "/lapuak/penjualan/{NamaProduk}": {
             "get": {
                 "description": "get data Penjualan.",
                 "consumes": [
