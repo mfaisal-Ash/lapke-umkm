@@ -11,8 +11,7 @@ type Pemasukan struct {
 	ID               int    `json:"id" bson:"id"`
 	NamaPemasukan    string `json:"namapemasukan" bson:"namapemasukan"`
 	JumlahPemasukan  int    `json:"jumlahpemasukan" bson:"jumlahpemasukan"`
-	TanggalDataMasuk string `json:"tanggaldatamasuk" bson:"tanggaldatamasuk"`
-	TanggalDataKeluar string `json:"tanggaldatakeluar" bson:"tanggaldatakeluar"`
+	TanggalDataMasukPem string `json:"tanggaldatamasukPemasuk" bson:"tanggaldatamasukPemasuk"`
 	Cabang           string `json:"cabang" bson:"cabang"`
 }
 

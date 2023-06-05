@@ -103,12 +103,12 @@ func FormatRupiah(amount float64) string {
 	return ac.FormatMoneyBigFloat(big.NewFloat(amount))
 }
 
-func InsertPemasukan(db *mongo.Database, id int, namapemasukan string, jumlahpemasukan int, tanggaldatamasuk string, cabang string) (InsertedID interface{}, err error) {
+func InsertPemasukan(db *mongo.Database, id int, namapemasukan string, jumlahpemasukan int, tanggaldatamasukPem string, cabang string) (InsertedID interface{}, err error) {
 	var m model.Pemasukan
 	m.ID = id
 	m.NamaPemasukan = namapemasukan
 	m.JumlahPemasukan = jumlahpemasukan
-	m.TanggalDataMasuk = tanggaldatamasuk
+	m.TanggalDataMasukPem = tanggaldatamasukPem
 	m.Cabang = cabang
 	return InsertOneDoc(db, "pemasukan", m), err
 }

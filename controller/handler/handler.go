@@ -82,6 +82,38 @@ func (db *UMKHandler) GetDataPenjualan(c *fiber.Ctx) (err error) {
 	}.WriteToBody(c)
 }
 
+// InsertDataPemasukan godoc
+// @Summary insert data pemasukan.
+// @Description get data pemasukan.
+// @Tags Lapke-umkm
+// @Accept application/json
+// @Param request body model.Pemasukan true "Payload Body [RAW]"
+// @Produce json
+// @Success 200 {object} model.Pemasukan
+// @Router /lapuak/inspemasukan [post]
+func (db *UMKHandler) InsertDataPemasukan(c *fiber.Ctx) (err error) {
+	database := config.DBMongo("lapke-umkm")
+	var pemasukan model.Pemasukan
+	if err := c.BodyParser(&pemasukan); err != nil {
+		return err
+	}
+	Inserted, err := repository.InsertPemasukan(database,
+		pemasukan.ID,
+		pemasukan.NamaPemasukan,
+		pemasukan.JumlahPemasukan,
+		pemasukan.TanggalDataMasukPem,
+		pemasukan.Cabang,
+	)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest)
+	}
+	return json.ReturnData{
+		Code:    200,
+		Success: true,
+		Status:  "Data Berhasil Disimpan",
+		Data:    Inserted,
+	}.WriteToBody(c)
+}
 // InsertDataPenjualan godoc
 // @Summary insert data penjualan.
 // @Description get data penjualan.
@@ -170,36 +202,22 @@ func (db *UMKHandler) KalkulasiLaporan(c *fiber.Ctx) (err error) {
 	if err != nil {
 		return fiber.NewError(fiber.StatusNotFound, "Tidak Ada Data Penjualan")
 	}
-	getdatakeuangan, err := repository.HitungTotalKeuangan(getdatapemasukan, getdatapengeluaran)
-	if err != nil {
-	return fiber.NewError(fiber.StatusNotFound, "Tidak Ada Data Keuangan")
-	}
+
+	// Menghitung total keuangan
+	totalKeuangan := HitungTotalKeuangan(getdatapemasukan, getdatapengeluaran)
 
 	jmlpenjualan := 0
 	for i := range getdatapenjualan {
 		jmlpenjualan += getdatapenjualan[i].JumlahPenjualan
 	}
 
-	jmlpemasukan := 0
-	for _, pemasukan := range getdatapemasukan {
-		jmlpemasukan += pemasukan.JumlahPemasukan
-	}
-
-	jmlpengeluaran := 0
-	for _, pengeluaran := range getdatapengeluaran {
-		jmlpengeluaran += pengeluaran.Jumlah
-	}
-
-	totalkeuangan := 0
-	for _, keuangan := range getdatakeuangan {
-		totalkeuangan += keuangan.JumlahPemasukan + keuangan.JumlahPengeluaran + keuangan.JumlahPenjualan
-	}
-	
+	jmlpemasukan := totalKeuangan.TotalPemasukan
+	jmlpengeluaran := totalKeuangan.TotalPengeluaran
 
 	jumlahpenjualan := float64(jmlpenjualan)
 	jumlahpemasukan := float64(jmlpemasukan)
 	jumlahpengeluaran := float64(jmlpengeluaran)
-	totalkeuangan := jumlahpemasukan + jumlahpengeluaran - jumlahpenjualan
+	totalkeuangan := jumlahpemasukan - jumlahpengeluaran - jumlahpenjualan
 
 	jmlpengeluaranrp := repository.FormatRupiah(jumlahpengeluaran)
 	jmlpemasukanrp := repository.FormatRupiah(jumlahpemasukan)
@@ -211,17 +229,16 @@ func (db *UMKHandler) KalkulasiLaporan(c *fiber.Ctx) (err error) {
 		Pemasukan:         getdatapemasukan,
 		Pengeluaran:       getdatapengeluaran,
 		JumlahKotor:       jmlpenjualanrp,
-		JumlahPemasukan: jmlpemasukan,
+		JumlahPemasukan:   jmlpemasukanrp,
 		JumlahPengeluaran: jmlpengeluaranrp,
-		JumlahBersih:      jmlakhirrupiah,
-		Total:             totalkeuanganrp,
+		JumlahBersih:      totalkeuanganrp,
 	}
 
 	_, err = repository.InsertRekap(config.DBMongo("lapke-umkm"),
 		getdatapengeluaran,
 		getdatapenjualan,
 		jmlpenjualan,
-		int(jumlahakhir),
+		int(totalkeuangan),
 	)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, "Gagal menyimpan data rekap")
