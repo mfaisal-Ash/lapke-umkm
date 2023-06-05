@@ -204,7 +204,10 @@ func (db *UMKHandler) KalkulasiLaporan(c *fiber.Ctx) (err error) {
 	}
 
 	// Menghitung total keuangan
-	totalKeuangan := HitungTotalKeuangan(getdatapemasukan, getdatapengeluaran)
+	totalKeuangan := repository.HitungTotalKeuangan(getdatapemasukan,getdatapengeluaran)
+	if err != nil {
+		return fiber.NewError(fiber.StatusNotFound, "Tidak Ada Data Total Keuangan")
+	}
 
 	jmlpenjualan := 0
 	for i := range getdatapenjualan {
@@ -228,10 +231,10 @@ func (db *UMKHandler) KalkulasiLaporan(c *fiber.Ctx) (err error) {
 		Penjualan:         getdatapenjualan,
 		Pemasukan:         getdatapemasukan,
 		Pengeluaran:       getdatapengeluaran,
-		JumlahKotor:       jmlpenjualanrp,
-		JumlahPemasukan:   jmlpemasukanrp,
-		JumlahPengeluaran: jmlpengeluaranrp,
-		JumlahBersih:      totalkeuanganrp,
+		JumlahKotor:       int(jmlpenjualanrp),
+		JumlahPemasukan:   int(jmlpemasukanrp),
+		JumlahPengeluaran: int(jmlpengeluaranrp),
+		JumlahBersih:      int(totalkeuanganrp),
 	}
 
 	_, err = repository.InsertRekap(config.DBMongo("lapke-umkm"),
