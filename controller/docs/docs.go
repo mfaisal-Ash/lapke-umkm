@@ -49,7 +49,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Lapak-UMKM"
+                    "Lapke-umkm"
                 ],
                 "summary": "Get data Pengeluaran.",
                 "responses": {
@@ -72,7 +72,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Lapak-UMKM"
+                    "Lapke-umkm"
                 ],
                 "summary": "Get data Penjualan.",
                 "responses": {
@@ -95,7 +95,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Lapak-UMKM"
+                    "Lapke-umkm"
                 ],
                 "summary": "insert data Pengeluaran.",
                 "parameters": [
@@ -129,7 +129,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Lapak-UMKM"
+                    "Lapke-umkm"
                 ],
                 "summary": "insert data penjualan.",
                 "parameters": [
@@ -163,7 +163,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Lapak-UMKM"
+                    "Lapke-umkm"
                 ],
                 "summary": "Mengambil data Pengeluaran (single).",
                 "parameters": [
@@ -195,7 +195,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Lapak-UMKM"
+                    "Lapke-umkm"
                 ],
                 "summary": "Mengambil data Penjualan (single).",
                 "parameters": [
