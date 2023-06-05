@@ -229,10 +229,10 @@ func (db *UMKHandler) KalkulasiLaporan(c *fiber.Ctx) (err error) {
 	jumlahpengeluaran := float64(jmlpengeluaran)
 	totalkeuangan := float64(jumlahpemasukan - jumlahpengeluaran - jumlahpenjualan)
 
-	jmlpengeluaranrp := repository.FormatRupiah(jumlahpengeluaran)
-	jmlpemasukanrp := repository.FormatRupiah(jumlahpemasukan)
-	totalkeuanganrp := repository.FormatRupiah(totalkeuangan)
-	jmlpenjualanrp := repository.FormatRupiah(jumlahpenjualan)
+	jmlpengeluaranrp := repository.FormatRpiah(jumlahpengeluaran)
+	jmlpemasukanrp := repository.FormatRpiah(jumlahpemasukan)
+	totalkeuanganrp := repository.FormatRpiah(totalkeuangan)
+	jmlpenjualanrp := repository.FormatRpiah(jumlahpenjualan)
 
 	data := model.RecapResponse{
 		Penjualan:         getdatapenjualan,
