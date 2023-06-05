@@ -49,10 +49,10 @@ type RecapResponse struct {
 	Penjualan         []Penjualan `json:"penjualan" bson:"penjualan"`
 	Pengeluaran       []Pengeluaran `json:"pengeluaran" bson:"pengeluaran"`
 	Pemasukan       []Pemasukan `json:"pemasukan" bson:"pemasukan"`
-	JumlahKotor       int         `json:"jumlahkotor" bson:"jumlahkotor"`
-	JumlahPemasukan int         `json:"jumlahPemasukan" bson:"jumlahPemasukan"`
-	JumlahPengeluaran int         `json:"jumlahPengeluaran" bson:"jumlahPengeluaran"`
-	JumlahBersih      int         `json:"jumlahbersih" bson:"jumlahbersih"`
+	JumlahKotor       string         `json:"jumlahkotor" bson:"jumlahkotor"`
+	JumlahPemasukan   string         `json:"jumlahPemasukan" bson:"jumlahPemasukan"`
+	JumlahPengeluaran string         `json:"jumlahPengeluaran" bson:"jumlahPengeluaran"`
+	JumlahBersih      string         `json:"jumlahbersih" bson:"jumlahbersih"`
 }
 
 type Total struct {
