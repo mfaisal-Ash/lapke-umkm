@@ -10,7 +10,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/gofiber/swagger"
 	"github.com/joho/godotenv"
-	"github.com/sidiq200/lapke-umkm/controller/docs"
+	_"github.com/sidiq200/lapke-umkm/controller/docs"
 	"github.com/sidiq200/lapke-umkm/controller/helper/exception"
 	"github.com/sidiq200/lapke-umkm/url"
 )
