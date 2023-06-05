@@ -92,7 +92,7 @@ func InsertRekap(db *mongo.Database, Pengeluaran []model.Pengeluaran, penjualan 
 	return InsertOneDoc(db, "rekap", m), err
 }
 
-func FormatRupiah(amount float64) string {
+func FormatRpiah(amount float64) string {
 	lc := acc.LocaleInfo["IDR"]
 	ac := acc.Accounting{
 		Symbol:    lc.ComSymbol,
