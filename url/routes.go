@@ -13,6 +13,7 @@ func SetuplapRoutes(router fiber.Router) {
 	UMK := handler.UMKHandler{Mongo}
 
 	router.Get("/penjualan/:namaproduk", UMK.GetDataPenjualan)
+	router.Get("/pemasukan/:namapemasukan", UMK.GetDataPemasukan)
 	router.Get("/pengeluaran/:namapengeluaran", UMK.GetDataPengeluaran)
 	router.Post("/inspenjualan", UMK.InsertDataPenjualan)
 	router.Post("/inspengeluaran", UMK.InsPengeluaran)

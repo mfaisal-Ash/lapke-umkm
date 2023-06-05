@@ -6,6 +6,6 @@ import (
 )
 
 func SetupRoutes(app *fiber.App) {
-	umkapi := app.Group("/lapumk", logger.New())
+	umkapi := app.Group("/lapuak", logger.New())
 	SetuplapRoutes(umkapi)
 }
