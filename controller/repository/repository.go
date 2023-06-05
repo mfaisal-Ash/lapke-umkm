@@ -17,6 +17,16 @@ func InsertOneDoc(db *mongo.Database, collection string, doc interface{}) (inser
 	}
 	return insertResult.InsertedID
 }
+func InsertPemasukan(db *mongo.Database, id int, namapemasukan string, jumlahpemasukan int, tanggaldatamasukPem string, cabang string) (InsertedID interface{}, err error) {
+	var m model.Pemasukan
+	m.ID = id
+	m.NamaPemasukan = namapemasukan
+	m.JumlahPemasukan = jumlahpemasukan
+	m.TanggalDataMasukPem = tanggaldatamasukPem
+	m.Cabang = cabang
+	return InsertOneDoc(db, "pemasukan", m), err
+}
+
 func InsertPenjualan(db *mongo.Database, id int, namaproduk string, jumlahpenjualan int, tanggaldatamasuk string, cabang string) (InsertedID interface{}, err error) {
 	var m model.Penjualan
 	m.ID = id
@@ -53,6 +63,30 @@ func GetPengeluaranByNama(nama string, db *mongo.Database) (data model.Pengeluar
 		fmt.Printf("GetDataPengeluaranFormNama: %v\n", err)
 	}
 	return data, err
+}
+
+func GetPemasukanByNama(nama string, db *mongo.Database) (data model.Pemasukan, err error) {
+	user := db.Collection("pemasukan")
+	filter := bson.M{"namapemasukan": nama}
+	err = user.FindOne(context.TODO(), filter).Decode(&data)
+	if err != nil {
+		fmt.Printf("GetDataPengeluaranFormNama: %v\n", err)
+	}
+	return data, err
+}
+
+func GetAllPemasukan(cabang string, db *mongo.Database) (data []model.Pemasukan, err error) {
+	user := db.Collection("pemasukan")
+	filter := bson.D{{}}
+	cursor, err := user.Find(context.TODO(), filter)
+	if err != nil {
+		fmt.Printf("GetAllPemasukan: %v\n", err)
+	}
+	err = cursor.All(context.TODO(), &data)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return
 }
 
 func GetAllPengeluaran(cabang string, db *mongo.Database) (data []model.Pengeluaran, err error) {
@@ -101,40 +135,6 @@ func FormatRpiah(amount float64) string {
 		Decimal:   lc.DecSep,
 	}
 	return ac.FormatMoneyBigFloat(big.NewFloat(amount))
-}
-
-func InsertPemasukan(db *mongo.Database, id int, namapemasukan string, jumlahpemasukan int, tanggaldatamasukPem string, cabang string) (InsertedID interface{}, err error) {
-	var m model.Pemasukan
-	m.ID = id
-	m.NamaPemasukan = namapemasukan
-	m.JumlahPemasukan = jumlahpemasukan
-	m.TanggalDataMasukPem = tanggaldatamasukPem
-	m.Cabang = cabang
-	return InsertOneDoc(db, "pemasukan", m), err
-}
-
-func GetPemasukanByNama(nama string, db *mongo.Database) (data model.Pemasukan, err error) {
-	user := db.Collection("pemasukan")
-	filter := bson.M{"namapemasukan": nama}
-	err = user.FindOne(context.TODO(), filter).Decode(&data)
-	if err != nil {
-		fmt.Printf("GetDataPengeluaranFormNama: %v\n", err)
-	}
-	return data, err
-}
-
-func GetAllPemasukan(cabang string, db *mongo.Database) (data []model.Pemasukan, err error) {
-	user := db.Collection("pemasukan")
-	filter := bson.D{{}}
-	cursor, err := user.Find(context.TODO(), filter)
-	if err != nil {
-		fmt.Printf("GetAllPemasukan: %v\n", err)
-	}
-	err = cursor.All(context.TODO(), &data)
-	if err != nil {
-		fmt.Println(err)
-	}
-	return
 }
 
 func HitungTotalKeuangan(pemasukan []model.Pemasukan, pengeluaran []model.Pengeluaran) (total model.Total) {
