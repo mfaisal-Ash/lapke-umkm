@@ -215,7 +215,14 @@ func (db *UMKHandler) KalkulasiLaporan(c *fiber.Ctx) (err error) {
 	}
 
 	jmlpemasukan := totalKeuangan.TotalPemasukan
+	for i := range getdatapenjualan {
+		jmlpemasukan += getdatapemasukan[i].JumlahPemasukan
+	}
+	
 	jmlpengeluaran := totalKeuangan.TotalPengeluaran
+	for i := range getdatapengeluaran {
+		jmlpengeluaran += getdatapengeluaran[i].Jumlah
+	}
 
 	jumlahpenjualan := float64(jmlpenjualan)
 	jumlahpemasukan := float64(jmlpemasukan)
